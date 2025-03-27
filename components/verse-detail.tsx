@@ -100,24 +100,18 @@ export function VerseDetail({
             </TabsList>
 
             <TabsContent value="original" className="text-base sm:text-lg">
-              <div className="overflow-auto">
-                <div className="whitespace-nowrap">
-                  <ScriptText text={verse.original} />
-                </div>
+              <div className="break-words whitespace-pre-wrap">
+                <ScriptText text={verse.original} />
               </div>
             </TabsContent>
             <TabsContent value="transliteration" className="text-base sm:text-lg">
-              <div className="overflow-auto">
-                <div className="whitespace-nowrap">
-                  <ScriptText text={verse.transliteration} isTransliteration />
-                </div>
+              <div className="break-words whitespace-pre-wrap">
+                <ScriptText text={verse.transliteration} isTransliteration />
               </div>
             </TabsContent>
             <TabsContent value="translation" className="text-base sm:text-lg">
-              <div className="overflow-auto">
-                <div className="whitespace-nowrap">
-                  {verse.translation}
-                </div>
+              <div className="break-words whitespace-pre-wrap">
+                {verse.translation}
               </div>
             </TabsContent>
           </Tabs>
@@ -180,10 +174,8 @@ export function VerseDetail({
               {selectedCommentators.map((commentator) => (
                 <div key={commentator} className="prose prose-zinc dark:prose-invert max-w-none">
                   <h4 className="text-lg sm:text-xl font-semi-bold text-primary">Commentary by {commentator}</h4>
-                  <div className="overflow-auto">
-                    <div className="whitespace-nowrap">
-                      <ScriptText text={verse.commentaries[commentator]} />
-                    </div>
+                  <div className="break-words whitespace-pre-wrap">
+                    <ScriptText text={verse.commentaries[commentator]} />
                   </div>
                 </div>
               ))}
