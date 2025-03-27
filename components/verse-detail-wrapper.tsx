@@ -36,20 +36,20 @@ export function VerseDetailWrapper({
   prevVerseNumber
 }: VerseDetailWrapperProps) {
   const router = useRouter()
-  const [selectedTab, setSelectedTab] = useState<string>(() => {
-    // Try to get the saved tab preference from localStorage during initialization
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('selectedVerseTab') || 'original'
-    }
-    return 'original'
-  })
+  const [selectedTab, setSelectedTab] = useState('original')
+  const [mounted, setMounted] = useState(false)
 
-  // Update localStorage when tab changes
+  useEffect(() => {
+    setMounted(true)
+    const savedTab = localStorage.getItem('selectedVerseTab')
+    if (savedTab) {
+      setSelectedTab(savedTab)
+    }
+  }, [])
+
   const handleTabChange = (value: string) => {
     setSelectedTab(value)
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('selectedVerseTab', value)
-    }
+    localStorage.setItem('selectedVerseTab', value)
   }
 
   const handleNavigation = (direction: "prev" | "next") => {
@@ -57,6 +57,20 @@ export function VerseDetailWrapper({
     if (newVerseNumber) {
       router.push(`/scripture/${scriptureSlug}/verse/${newVerseNumber}`)
     }
+  }
+
+  if (!mounted) {
+    return (
+      <VerseDetail
+        verse={verse}
+        hasNextVerse={hasNextVerse}
+        hasPrevVerse={hasPrevVerse}
+        totalVerses={totalVerses}
+        onNavigate={handleNavigation}
+        selectedTab="original"
+        onTabChange={handleTabChange}
+      />
+    )
   }
 
   return (

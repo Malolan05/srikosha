@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Section, TextDisplayMode } from "@/lib/types"
 import { Button } from "@/components/ui/button"
@@ -51,7 +51,7 @@ function getFilteredSections(sections: Section[], paths: number[][]): Section[] 
 }
 
 // Calculate absolute verse number based on the verse's position in the scripture
-function calculateAbsoluteVerseNumber(sections: Section[], targetVerse: Section["verses"][0]): number {
+function calculateAbsoluteVerseNumber(sections: Section[], targetVerse: NonNullable<Section["verses"]>[number]): number {
   let absoluteCount = 0
   let found = false
   let result = 0
@@ -80,7 +80,7 @@ function calculateAbsoluteVerseNumber(sections: Section[], targetVerse: Section[
 }
 
 function renderVerse(
-  verse: Section["verses"][0], 
+  verse: NonNullable<Section["verses"]>[number], 
   scriptureSlug: string, 
   displayMode: TextDisplayMode,
   allSections: Section[]
@@ -142,9 +142,51 @@ function renderSection(
 
 export default function ScriptureContent({ sections, scriptureSlug }: ScriptureContentProps) {
   const [displayMode, setDisplayMode] = useState<TextDisplayMode>('original')
-  const [selectedPaths, setSelectedPaths] = useState<number[][]>([[0]]) // Initialize with Chapter 1
-  
+  const [selectedPaths, setSelectedPaths] = useState<number[][]>([])
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+    // Initialize with first chapter after mounting
+    setSelectedPaths([[0]])
+  }, [])
+
   const filteredSections = getFilteredSections(sections, selectedPaths)
+
+  if (!mounted) {
+    return (
+      <div className="relative space-y-6">
+        <Card className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div className="px-6 flex flex-col sm:flex-row gap-6 items-start">
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold mb-4">Filter Content</h3>
+              <SectionFilter
+                sections={sections}
+                selectedPaths={[[0]]}
+                onPathsChange={() => {}}
+              />
+            </div>
+            <div className="w-full sm:w-[200px]">
+              <h3 className="text-lg font-semibold mb-4">Display Mode</h3>
+              <Select value="original" onValueChange={() => {}}>
+                <SelectTrigger className="w-full bg-background text-base">
+                  <SelectValue placeholder="Select text display" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="original" className="text-base">Original Text</SelectItem>
+                  <SelectItem value="romanized" className="text-base">Romanized Text</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </Card>
+        
+        <div className="space-y-8">
+          {sections.map((section) => renderSection(section, 1, scriptureSlug, 'original', sections))}
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="relative space-y-6">

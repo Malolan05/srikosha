@@ -29,8 +29,8 @@ export interface Verse {
 export interface Section {
   title: string
   number: number | string
-  verses: Verse[]
-  sections: Section[]
+  verses?: Verse[]
+  sections?: Section[]
 }
 
 export interface ScriptureMetadata {

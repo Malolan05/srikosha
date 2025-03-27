@@ -4,9 +4,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 interface VerseDisplayProps {
   verse: {
-    original_text: string
-    iast_text: string
-    english_translation: string
+    original: string
+    transliteration: string
+    translation: string
   }
 }
 
@@ -20,18 +20,18 @@ export default function VerseDisplay({ verse }: VerseDisplayProps) {
       </TabsList>
       <TabsContent value="original">
         <div className="text-2xl text-center leading-relaxed font-tamil">
-          {verse.original_text}
+          {verse.original}
         </div>
       </TabsContent>
       <TabsContent value="transliteration">
         <div className="text-2xl text-center leading-relaxed">
-          {verse.iast_text}
+          {verse.transliteration}
         </div>
       </TabsContent>
       <TabsContent value="translation">
-        {verse.english_translation && (
+        {verse.translation && (
           <div className="text-xl text-center leading-relaxed">
-            {verse.english_translation}
+            {verse.translation}
           </div>
         )}
       </TabsContent>
