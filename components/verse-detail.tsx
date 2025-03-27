@@ -58,7 +58,7 @@ export function VerseDetail({
   }
 
   return (
-    <Card className="w-full max-w-4xl mx-auto overflow-x-hidden">
+    <Card className="w-full max-w-4xl mx-auto">
       <CardContent className="px-4 sm:px-6">
         <div className="flex flex-col gap-2 mb-4 sm:mb-6">
           {verse.sectionInfo && (
@@ -67,7 +67,7 @@ export function VerseDetail({
             </div>
           )}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0">
-            <h2 className="text-xl sm:text-2xl font-bold text-primary break-words">
+            <h2 className="text-xl sm:text-2xl font-bold text-primary">
               {verse.sectionInfo ? `Verse ${verse.sectionInfo.path[0]}.${verse.number}` : `Verse ${verse.number}`}
             </h2>
             <div className="flex gap-2 w-full sm:w-auto">
@@ -91,7 +91,7 @@ export function VerseDetail({
           </div>
         </div>
 
-        <div className="overflow-x-hidden">
+        <div>
           <Tabs value={selectedTab} onValueChange={onTabChange} className="w-full">
             <TabsList className="w-full justify-start mb-4 sm:mb-6">
               <TabsTrigger value="original" className="flex-1">Original</TabsTrigger>
@@ -99,19 +99,25 @@ export function VerseDetail({
               <TabsTrigger value="translation" className="flex-1">Translation</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="original" className="text-base sm:text-lg overflow-x-hidden">
-              <div className="max-w-full overflow-wrap-anywhere whitespace-pre-wrap">
-                <ScriptText text={verse.original} />
+            <TabsContent value="original" className="text-base sm:text-lg">
+              <div className="overflow-auto">
+                <div className="whitespace-nowrap">
+                  <ScriptText text={verse.original} />
+                </div>
               </div>
             </TabsContent>
-            <TabsContent value="transliteration" className="text-base sm:text-lg overflow-x-hidden">
-              <div className="max-w-full overflow-wrap-anywhere whitespace-pre-wrap">
-                <ScriptText text={verse.transliteration} isTransliteration />
+            <TabsContent value="transliteration" className="text-base sm:text-lg">
+              <div className="overflow-auto">
+                <div className="whitespace-nowrap">
+                  <ScriptText text={verse.transliteration} isTransliteration />
+                </div>
               </div>
             </TabsContent>
-            <TabsContent value="translation" className="text-base sm:text-lg overflow-x-hidden">
-              <div className="max-w-full overflow-wrap-anywhere whitespace-pre-wrap">
-                {verse.translation}
+            <TabsContent value="translation" className="text-base sm:text-lg">
+              <div className="overflow-auto">
+                <div className="whitespace-nowrap">
+                  {verse.translation}
+                </div>
               </div>
             </TabsContent>
           </Tabs>
@@ -119,7 +125,7 @@ export function VerseDetail({
 
         {commentators.length > 0 && (
           <div className="mt-6 sm:mt-8">
-            <h3 className="text-xl sm:text-2xl font-bold text-primary mb-3 sm:mb-4 break-words">Commentaries</h3>
+            <h3 className="text-xl sm:text-2xl font-bold text-primary mb-3 sm:mb-4">Commentaries</h3>
             <Select
               value={selectedCommentators.length === commentators.length ? "all" : "default"}
               onValueChange={(value) => {
@@ -172,10 +178,12 @@ export function VerseDetail({
             </Select>
             <div className="space-y-4 sm:space-y-6">
               {selectedCommentators.map((commentator) => (
-                <div key={commentator} className="prose prose-zinc dark:prose-invert max-w-none overflow-x-hidden">
-                  <h4 className="text-lg sm:text-xl font-semi-bold text-primary break-words">Commentary by {commentator}</h4>
-                  <div className="max-w-full overflow-wrap-anywhere whitespace-pre-wrap">
-                    <ScriptText text={verse.commentaries[commentator]} />
+                <div key={commentator} className="prose prose-zinc dark:prose-invert max-w-none">
+                  <h4 className="text-lg sm:text-xl font-semi-bold text-primary">Commentary by {commentator}</h4>
+                  <div className="overflow-auto">
+                    <div className="whitespace-nowrap">
+                      <ScriptText text={verse.commentaries[commentator]} />
+                    </div>
                   </div>
                 </div>
               ))}
