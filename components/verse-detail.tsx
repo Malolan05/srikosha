@@ -58,7 +58,7 @@ export function VerseDetail({
   }
 
   return (
-    <Card className="w-full max-w-4xl mx-auto overflow-hidden">
+    <Card className="w-full max-w-4xl mx-auto overflow-x-hidden">
       <CardContent className="px-4 sm:px-6">
         <div className="flex flex-col gap-2 mb-4 sm:mb-6">
           {verse.sectionInfo && (
@@ -91,7 +91,7 @@ export function VerseDetail({
           </div>
         </div>
 
-        <div className="overflow-hidden">
+        <div className="overflow-x-hidden">
           <Tabs value={selectedTab} onValueChange={onTabChange} className="w-full">
             <TabsList className="w-full justify-start mb-4 sm:mb-6">
               <TabsTrigger value="original" className="flex-1">Original</TabsTrigger>
@@ -99,17 +99,17 @@ export function VerseDetail({
               <TabsTrigger value="translation" className="flex-1">Translation</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="original" className="text-base sm:text-lg overflow-hidden">
+            <TabsContent value="original" className="text-base sm:text-lg overflow-x-hidden">
               <div className="max-w-full overflow-wrap-anywhere whitespace-pre-wrap">
                 <ScriptText text={verse.original} />
               </div>
             </TabsContent>
-            <TabsContent value="transliteration" className="text-base sm:text-lg overflow-hidden">
+            <TabsContent value="transliteration" className="text-base sm:text-lg overflow-x-hidden">
               <div className="max-w-full overflow-wrap-anywhere whitespace-pre-wrap">
                 <ScriptText text={verse.transliteration} isTransliteration />
               </div>
             </TabsContent>
-            <TabsContent value="translation" className="text-base sm:text-lg overflow-hidden">
+            <TabsContent value="translation" className="text-base sm:text-lg overflow-x-hidden">
               <div className="max-w-full overflow-wrap-anywhere whitespace-pre-wrap">
                 {verse.translation}
               </div>
@@ -172,7 +172,7 @@ export function VerseDetail({
             </Select>
             <div className="space-y-4 sm:space-y-6">
               {selectedCommentators.map((commentator) => (
-                <div key={commentator} className="prose prose-zinc dark:prose-invert max-w-none overflow-hidden">
+                <div key={commentator} className="prose prose-zinc dark:prose-invert max-w-none overflow-x-hidden">
                   <h4 className="text-lg sm:text-xl font-semi-bold text-primary break-words">Commentary by {commentator}</h4>
                   <div className="max-w-full overflow-wrap-anywhere whitespace-pre-wrap">
                     <ScriptText text={verse.commentaries[commentator]} />

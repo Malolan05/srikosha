@@ -19,14 +19,14 @@ export default function VerseDisplay({ verse }: VerseDisplayProps) {
         <TabsTrigger value="translation" className="flex-1 text-sm sm:text-base">Translation</TabsTrigger>
       </TabsList>
       <TabsContent value="original">
-        <div className="text-xl sm:text-2xl text-center leading-relaxed font-tamil break-words overflow-hidden">
+        <div className="text-xl sm:text-2xl text-center leading-relaxed font-tamil break-words overflow-x-hidden overflow-y-auto">
           <div className="max-w-full overflow-wrap-anywhere whitespace-pre-wrap px-2">
             {verse.original}
           </div>
         </div>
       </TabsContent>
       <TabsContent value="transliteration">
-        <div className="text-xl sm:text-2xl text-center leading-relaxed break-words overflow-hidden">
+        <div className="text-xl sm:text-2xl text-center leading-relaxed break-words overflow-x-hidden overflow-y-auto">
           <div className="max-w-full overflow-wrap-anywhere whitespace-pre-wrap px-2">
             {verse.transliteration}
           </div>
@@ -34,7 +34,7 @@ export default function VerseDisplay({ verse }: VerseDisplayProps) {
       </TabsContent>
       <TabsContent value="translation">
         {verse.translation && (
-          <div className="text-lg sm:text-xl text-center leading-relaxed break-words overflow-hidden">
+          <div className="text-lg sm:text-xl text-center leading-relaxed break-words overflow-x-hidden overflow-y-auto">
             <div className="max-w-full overflow-wrap-anywhere whitespace-pre-wrap px-2">
               {verse.translation}
             </div>
