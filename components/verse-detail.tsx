@@ -59,22 +59,23 @@ export function VerseDetail({
 
   return (
     <Card className="w-full max-w-4xl mx-auto">
-      <CardContent className="px-6">
-        <div className="flex flex-col gap-2 mb-6">
+      <CardContent className="px-4 sm:px-6">
+        <div className="flex flex-col gap-2 mb-4 sm:mb-6">
           {verse.sectionInfo && (
             <div className="text-sm text-muted-foreground">
               Chapter {verse.sectionInfo.path[0]}
             </div>
           )}
-          <div className="flex justify-between items-center">
-            <h2 className="text-2xl font-bold text-primary">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0">
+            <h2 className="text-xl sm:text-2xl font-bold text-primary">
               {verse.sectionInfo ? `Verse ${verse.sectionInfo.path[0]}.${verse.number}` : `Verse ${verse.number}`}
             </h2>
-            <div className="flex gap-2">
+            <div className="flex gap-2 w-full sm:w-auto">
               <Button
                 variant="secondary"
                 onClick={() => onNavigate("prev")}
                 disabled={!hasPrevVerse}
+                className="flex-1 sm:flex-none"
               >
                 Previous
               </Button>
@@ -82,6 +83,7 @@ export function VerseDetail({
                 variant="secondary"
                 onClick={() => onNavigate("next")}
                 disabled={!hasNextVerse}
+                className="flex-1 sm:flex-none"
               >
                 Next
               </Button>
@@ -90,26 +92,26 @@ export function VerseDetail({
         </div>
 
         <Tabs value={selectedTab} onValueChange={onTabChange} className="w-full">
-          <TabsList className="w-full justify-start mb-6">
-            <TabsTrigger value="original">Original</TabsTrigger>
-            <TabsTrigger value="transliteration">Transliteration</TabsTrigger>
-            <TabsTrigger value="translation">Translation</TabsTrigger>
+          <TabsList className="w-full justify-start mb-4 sm:mb-6">
+            <TabsTrigger value="original" className="flex-1">Original</TabsTrigger>
+            <TabsTrigger value="transliteration" className="flex-1">Transliteration</TabsTrigger>
+            <TabsTrigger value="translation" className="flex-1">Translation</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="original" className="text-lg">
+          <TabsContent value="original" className="text-base sm:text-lg">
             <ScriptText text={verse.original} />
           </TabsContent>
-          <TabsContent value="transliteration" className="text-lg">
+          <TabsContent value="transliteration" className="text-base sm:text-lg">
             <ScriptText text={verse.transliteration} isTransliteration />
           </TabsContent>
-          <TabsContent value="translation" className="text-lg">
+          <TabsContent value="translation" className="text-base sm:text-lg">
             {verse.translation}
           </TabsContent>
         </Tabs>
 
         {commentators.length > 0 && (
-          <div className="mt-8">
-            <h3 className="text-2xl font-bold text-primary mb-4">Commentaries</h3>
+          <div className="mt-6 sm:mt-8">
+            <h3 className="text-xl sm:text-2xl font-bold text-primary mb-3 sm:mb-4">Commentaries</h3>
             <Select
               value={selectedCommentators.length === commentators.length ? "all" : "default"}
               onValueChange={(value) => {
@@ -128,7 +130,7 @@ export function VerseDetail({
                 })
               }}
             >
-              <SelectTrigger className="w-[250px] mb-4 bg-background text-base">
+              <SelectTrigger className="w-full sm:w-[250px] mb-3 sm:mb-4 bg-background text-base">
                 <SelectValue>
                   {selectedCommentators.length === commentators.length
                     ? "All Commentaries"
@@ -160,10 +162,10 @@ export function VerseDetail({
                 ))}
               </SelectContent>
             </Select>
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6">
               {selectedCommentators.map((commentator) => (
                 <div key={commentator} className="prose prose-zinc dark:prose-invert max-w-none">
-                  <h4 className="text-xl font-semi-bold text-primary">Commentary by {commentator}</h4>
+                  <h4 className="text-lg sm:text-xl font-semi-bold text-primary">Commentary by {commentator}</h4>
                   <ScriptText text={verse.commentaries[commentator]} />
                 </div>
               ))}
