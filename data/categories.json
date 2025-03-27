@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Divya Prabandhams",
+    "slug": "divya-prabandhams",
+    "description": "A collection of 4,000 sacred Tamil hymns composed by the Āḻvārs",
+    "longDescription": "Revered as the Tamil Veda, it is a compilation of devotional hymns sung by the Āḻvārs extolling Śrīman Nārāyaṇa."
+  },
+  {
+    "name": "Guruparamparā Vaibhavam",
+    "slug": "guruparamparavaibhavam",
+    "description": "A glorious chronicle of the revered Ācārya lineage",
+    "longDescription": "A tribute to the revered Ācārya lineage preserving and passing down the divine teachings of Śrīman Nārāyaṇa."
+  },
+  {
+    "name": "Itihāsas & Purāṇas",
+    "slug": "itihasa-purana",
+    "description": "Scriptures that unveil dharma and devotion",
+    "longDescription": "Comprising historical epics and lores, they convey eternal truths and philosophical principles."
+  },
+  {
+    "name": "Stotras",
+    "slug": "stotras",
+    "description": "Devotional hymns glorifying Bhagavān and Ācāryas",
+    "longDescription": "These hymns eulogize Bhagavān and the revered Ācāryas of the Śrī Vaiṣṇava Sampradāya."
+  },
+  {
+    "name": "Āgamas",
+    "slug": "agamas",
+    "description": "Scriptures that guide rituals and temple worship",
+    "longDescription": "These scriptures define temple design, iconography, and daily worship in the Śrī Vaiṣṇava Sampradāya."
+  },
+  {
+    "name": "Theology",
+    "slug": "theology",
+    "description": "A systematic exposition of divine truths leading to Mokṣa",
+    "longDescription": "Śrī Vaiṣṇava theology elucidates the relationship between Śrīman Nārāyaṇa, the Jīvātmā, and the path to Mokṣa."
+  },
+  {
+    "name": "Vedas",
+    "slug": "vedas",
+    "description": "The primordial scriptures of Sanātana Dharma",
+    "longDescription": "The foundational and scriptural authorities upheld by the Śrī Vaiṣṇava Sampradāya."
+  },
+  {
+    "name": "Vedānta",
+    "slug": "vedanta",
+    "description": "The philosophical essence and culmination of the Vedas",
+    "longDescription": "The philosophical essence of the Vedas, culminating in teachings on Brahman, the Jīvātmā, and Mokṣa."
+  }
+] 
