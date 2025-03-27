@@ -157,26 +157,28 @@ export default function ScriptureContent({ sections, scriptureSlug }: ScriptureC
     return (
       <div className="relative space-y-4 sm:space-y-6">
         <Card className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-          <div className="px-4 sm:px-6 flex flex-col gap-4 sm:gap-6">
-            <div className="flex-1">
-              <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Filter Content</h3>
-              <SectionFilter
-                sections={sections}
-                selectedPaths={[[0]]}
-                onPathsChange={() => {}}
-              />
-            </div>
-            <div className="w-full sm:w-[200px]">
-              <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Display Mode</h3>
-              <Select value="original" onValueChange={() => {}}>
-                <SelectTrigger className="w-full bg-background text-base">
-                  <SelectValue placeholder="Select text display" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="original" className="text-base">Original Text</SelectItem>
-                  <SelectItem value="romanized" className="text-base">Romanized Text</SelectItem>
-                </SelectContent>
-              </Select>
+          <div className="px-4 sm:px-6">
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+              <div className="flex-1">
+                <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Filter Content</h3>
+                <SectionFilter
+                  sections={sections}
+                  selectedPaths={[[0]]}
+                  onPathsChange={() => {}}
+                />
+              </div>
+              <div className="w-full sm:w-[200px]">
+                <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Display Mode</h3>
+                <Select value="original" onValueChange={() => {}}>
+                  <SelectTrigger className="w-full bg-background text-base">
+                    <SelectValue placeholder="Select text display" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="original" className="text-base">Original Text</SelectItem>
+                    <SelectItem value="romanized" className="text-base">Romanized Text</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
         </Card>
@@ -191,26 +193,28 @@ export default function ScriptureContent({ sections, scriptureSlug }: ScriptureC
   return (
     <div className="relative space-y-4 sm:space-y-6">
       <Card className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="px-4 sm:px-6 flex flex-col gap-4 sm:gap-6">
-          <div className="flex-1">
-            <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Filter Content</h3>
-            <SectionFilter
-              sections={sections}
-              selectedPaths={selectedPaths}
-              onPathsChange={setSelectedPaths}
-            />
-          </div>
-          <div className="w-full sm:w-[200px]">
-            <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Display Mode</h3>
-            <Select value={displayMode} onValueChange={(value) => setDisplayMode(value as TextDisplayMode)}>
-              <SelectTrigger className="w-full bg-background text-base">
-                <SelectValue placeholder="Select text display" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="original" className="text-base">Original Text</SelectItem>
-                <SelectItem value="romanized" className="text-base">Romanized Text</SelectItem>
-              </SelectContent>
-            </Select>
+        <div className="px-4 sm:px-6">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+            <div className="flex-1">
+              <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Filter Content</h3>
+              <SectionFilter
+                sections={sections}
+                selectedPaths={selectedPaths}
+                onPathsChange={setSelectedPaths}
+              />
+            </div>
+            <div className="w-full sm:w-[200px]">
+              <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Display Mode</h3>
+              <Select value={displayMode} onValueChange={(value) => setDisplayMode(value as TextDisplayMode)}>
+                <SelectTrigger className="w-full bg-background text-base">
+                  <SelectValue placeholder="Select text display" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="original" className="text-base">Original Text</SelectItem>
+                  <SelectItem value="romanized" className="text-base">Romanized Text</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </div>
       </Card>
