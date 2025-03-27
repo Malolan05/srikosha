@@ -11,12 +11,16 @@ interface VerseDisplayProps {
 }
 
 export default function VerseDisplay({ verse }: VerseDisplayProps) {
+  const hasTranslation = Boolean(verse.translation && verse.translation.trim().length > 0)
+
   return (
     <Tabs defaultValue="original" className="w-full">
       <TabsList className="w-full mb-3 sm:mb-4">
         <TabsTrigger value="original" className="flex-1 text-sm sm:text-base">Original</TabsTrigger>
         <TabsTrigger value="transliteration" className="flex-1 text-sm sm:text-base">Transliteration</TabsTrigger>
-        <TabsTrigger value="translation" className="flex-1 text-sm sm:text-base">Translation</TabsTrigger>
+        {hasTranslation && (
+          <TabsTrigger value="translation" className="flex-1 text-sm sm:text-base">Translation</TabsTrigger>
+        )}
       </TabsList>
       <TabsContent value="original">
         <div className="text-xl sm:text-2xl text-center leading-relaxed font-tamil">
@@ -32,15 +36,15 @@ export default function VerseDisplay({ verse }: VerseDisplayProps) {
           </div>
         </div>
       </TabsContent>
-      <TabsContent value="translation">
-        {verse.translation && (
+      {hasTranslation && (
+        <TabsContent value="translation">
           <div className="text-lg sm:text-xl text-center leading-relaxed">
             <div className="break-words whitespace-pre-wrap px-2">
               {verse.translation}
             </div>
           </div>
-        )}
-      </TabsContent>
+        </TabsContent>
+      )}
     </Tabs>
   )
 }

@@ -1,7 +1,7 @@
 "use client"
 
-import { useRouter } from "next/navigation"
-import { useState, useEffect } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
+import { useState, useEffect, useCallback } from "react"
 import { VerseDetail } from "@/components/verse-detail"
 
 interface VerseDetailWrapperProps {
@@ -26,6 +26,16 @@ interface VerseDetailWrapperProps {
   prevVerseNumber?: number
 }
 
+const validTabs = ['original', 'transliteration', 'translation'] as const
+type TabType = typeof validTabs[number]
+
+function getInitialTab(searchParams: ReturnType<typeof useSearchParams>): TabType {
+  const tabFromUrl = searchParams.get('tab')
+  return tabFromUrl && validTabs.includes(tabFromUrl as TabType) 
+    ? tabFromUrl as TabType 
+    : 'original'
+}
+
 export function VerseDetailWrapper({ 
   verse, 
   hasNextVerse, 
@@ -36,42 +46,42 @@ export function VerseDetailWrapper({
   prevVerseNumber
 }: VerseDetailWrapperProps) {
   const router = useRouter()
-  const [selectedTab, setSelectedTab] = useState('original')
+  const searchParams = useSearchParams()
+  
+  // Initialize from URL params immediately to prevent flashing
   const [mounted, setMounted] = useState(false)
+  const currentTab = getInitialTab(searchParams)
 
+  // Sync localStorage with URL params after mount
   useEffect(() => {
     setMounted(true)
-    const savedTab = localStorage.getItem('selectedVerseTab')
-    if (savedTab) {
-      setSelectedTab(savedTab)
-    }
-  }, [])
+    localStorage.setItem('selectedVerseTab', currentTab)
+  }, [currentTab])
 
-  const handleTabChange = (value: string) => {
-    setSelectedTab(value)
+  const handleTabChange = useCallback((value: string) => {
+    if (!validTabs.includes(value as TabType)) return
+    
     localStorage.setItem('selectedVerseTab', value)
-  }
+    
+    // Update URL without navigation using router.replace
+    const newParams = new URLSearchParams(searchParams.toString())
+    newParams.set('tab', value)
+    router.replace(`/scripture/${scriptureSlug}/verse/${verse.number}?${newParams.toString()}`, {
+      scroll: false
+    })
+  }, [router, scriptureSlug, verse.number, searchParams])
 
-  const handleNavigation = (direction: "prev" | "next") => {
+  const handleNavigation = useCallback((direction: "prev" | "next") => {
     const newVerseNumber = direction === "prev" ? prevVerseNumber : nextVerseNumber
     if (newVerseNumber) {
-      router.push(`/scripture/${scriptureSlug}/verse/${newVerseNumber}`)
+      // Navigate to new verse while preserving tab and other query params
+      const newParams = new URLSearchParams(searchParams.toString())
+      if (!newParams.has('tab')) {
+        newParams.set('tab', currentTab)
+      }
+      router.push(`/scripture/${scriptureSlug}/verse/${newVerseNumber}?${newParams.toString()}`)
     }
-  }
-
-  if (!mounted) {
-    return (
-      <VerseDetail
-        verse={verse}
-        hasNextVerse={hasNextVerse}
-        hasPrevVerse={hasPrevVerse}
-        totalVerses={totalVerses}
-        onNavigate={handleNavigation}
-        selectedTab="original"
-        onTabChange={handleTabChange}
-      />
-    )
-  }
+  }, [scriptureSlug, nextVerseNumber, prevVerseNumber, currentTab, router, searchParams])
 
   return (
     <VerseDetail
@@ -80,7 +90,7 @@ export function VerseDetailWrapper({
       hasPrevVerse={hasPrevVerse}
       totalVerses={totalVerses}
       onNavigate={handleNavigation}
-      selectedTab={selectedTab}
+      selectedTab={currentTab}
       onTabChange={handleTabChange}
     />
   )
