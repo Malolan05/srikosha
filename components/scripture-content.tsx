@@ -86,7 +86,7 @@ function renderVerse(
   allSections: Section[]
 ) {
   const absoluteVerseNumber = calculateAbsoluteVerseNumber(allSections, verse)
-  const text = displayMode === 'original' ? verse.original_text : verse.iast_text
+  const text = displayMode === 'original' ? verse.original_text : (verse.iast_text || "")
   
   return (
     <div key={verse.verse_number} className="p-3 sm:p-4 rounded-lg bg-background border hover:bg-muted/5 transition-colors">

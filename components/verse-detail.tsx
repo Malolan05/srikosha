@@ -95,7 +95,9 @@ export function VerseDetail({
           <Tabs value={selectedTab} onValueChange={onTabChange} className="w-full">
             <TabsList className="w-full justify-start mb-4 sm:mb-6">
               <TabsTrigger value="original" className="flex-1">Original</TabsTrigger>
-              <TabsTrigger value="transliteration" className="flex-1">Transliteration</TabsTrigger>
+              {verse.transliteration && verse.transliteration.trim().length > 0 && (
+                <TabsTrigger value="transliteration" className="flex-1">Transliteration</TabsTrigger>
+              )}
               {verse.translation && verse.translation.trim().length > 0 && (
                 <TabsTrigger value="translation" className="flex-1">Translation</TabsTrigger>
               )}
@@ -106,11 +108,13 @@ export function VerseDetail({
                 <ScriptText text={verse.original} />
               </div>
             </TabsContent>
-            <TabsContent value="transliteration" className="text-base sm:text-lg">
-              <div className="break-words whitespace-pre-wrap">
-                <ScriptText text={verse.transliteration} isTransliteration />
-              </div>
-            </TabsContent>
+            {verse.transliteration && verse.transliteration.trim().length > 0 && (
+              <TabsContent value="transliteration" className="text-base sm:text-lg">
+                <div className="break-words whitespace-pre-wrap">
+                  <ScriptText text={verse.transliteration} isTransliteration />
+                </div>
+              </TabsContent>
+            )}
             {verse.translation && verse.translation.trim().length > 0 && (
               <TabsContent value="translation" className="text-base sm:text-lg">
                 <div className="break-words whitespace-pre-wrap text-xl sm:text-xl leading-relaxed">

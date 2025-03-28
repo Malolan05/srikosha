@@ -86,7 +86,7 @@ export default function ScriptureViewer({ scripture, content }: ScriptureViewerP
 
         <VerseDisplay verse={{
           original: currentVerse.original_text,
-          transliteration: currentVerse.iast_text,
+          transliteration: currentVerse.iast_text || "",
           translation: currentVerse.english_translation || ""
         }} />
 
@@ -130,7 +130,7 @@ export default function ScriptureViewer({ scripture, content }: ScriptureViewerP
 
       <VerseDisplay verse={{
         original: currentVerse.original_text,
-        transliteration: currentVerse.iast_text,
+        transliteration: currentVerse.iast_text || "",
         translation: currentVerse.english_translation || ""
       }} />
 

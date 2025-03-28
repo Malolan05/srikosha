@@ -21,8 +21,8 @@ export interface Commentary {
 export interface Verse {
   verse_number: number
   original_text: string
-  iast_text: string
-  english_translation: string | null
+  iast_text?: string
+  english_translation?: string | null
   commentaries: Commentary[]
 }
 

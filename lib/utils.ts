@@ -9,11 +9,13 @@ export function cn(...inputs: ClassValue[]) {
 // Import all scripture files
 import sriParameshvaraSamhita from '@/data/scriptures/sri-parameshvara-samhita.json'
 import gitarthasangraha from '@/data/scriptures/gitarthasangraha.json'
+import brahmaSutraAdhyayaOne from '@/data/scriptures/brahma-sutra-adhyaya-one.json'
 
 // Create a map of all scriptures
 const scripturesData: Scripture[] = [
   sriParameshvaraSamhita,
-  gitarthasangraha
+  gitarthasangraha,
+  brahmaSutraAdhyayaOne
 ]
 
 export function getScriptType(text: string): 'devanagari' | 'tamil' | 'latin' | 'mixed' {

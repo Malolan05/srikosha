@@ -140,7 +140,7 @@ export default async function VersePage({ params }: VersePageProps) {
   const verseData = {
     number: verse.verse_number,
     original: verse.original_text,
-    transliteration: verse.iast_text,
+    transliteration: verse.iast_text || "",
     translation: verse.english_translation || "",
     commentaries: verse.commentaries.reduce((acc: { [key: string]: string }, curr: any) => {
       acc[curr.author] = curr.commentary
