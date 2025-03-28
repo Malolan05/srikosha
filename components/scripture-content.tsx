@@ -98,7 +98,7 @@ function renderVerse(
         </div>
         <Button variant="secondary" size="sm" asChild className="w-full sm:w-auto">
           <Link href={`/scripture/${scriptureSlug}/verse/${absoluteVerseNumber}`}>
-            View Śloka
+            View Verse
           </Link>
         </Button>
       </div>
