@@ -11,12 +11,14 @@ import sriParameshvaraSamhita from '@/data/scriptures/sri-parameshvara-samhita.j
 import gitarthasangraha from '@/data/scriptures/gitarthasangraha.json'
 import brahmaSutraAdhyayaOne from '@/data/scriptures/brahma-sutra-adhyaya-one.json'
 import brahmaSutraAdhyayaTwo from '@/data/scriptures/brahma-sutra-adhyaya-two.json'
+import brahmaSutraAdhyayaThree from '@/data/scriptures/brahma-sutra-adhyaya-three.json'
 // Create a map of all scriptures
 const scripturesData: Scripture[] = [
   sriParameshvaraSamhita,
   gitarthasangraha,
   brahmaSutraAdhyayaOne,
-  brahmaSutraAdhyayaTwo
+  brahmaSutraAdhyayaTwo,
+  brahmaSutraAdhyayaThree
 ]
 
 export function getScriptType(text: string): 'devanagari' | 'tamil' | 'latin' | 'mixed' {
