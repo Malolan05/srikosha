@@ -224,6 +224,28 @@ export default function VerseDetail({
             </div>
           </div>
         )}
+
+        {/* Bottom Navigation */}
+        <div className="mt-8 pt-6 border-t">
+          <div className="flex justify-between items-center gap-4">
+            <Button
+              variant="secondary"
+              onClick={() => onNavigate("prev")}
+              disabled={!hasPrevVerse}
+              className="flex-1"
+            >
+              Previous Verse
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={() => onNavigate("next")}
+              disabled={!hasNextVerse}
+              className="flex-1"
+            >
+              Next Verse
+            </Button>
+          </div>
+        </div>
       </CardContent>
     </Card>
   )
