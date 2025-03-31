@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation"
 import { useState, useEffect, useCallback } from "react"
-import { VerseDetail } from "@/components/verse-detail"
+import VerseDetail from "@/components/verse-detail"
 
 interface VerseDetailWrapperProps {
   verse: {
@@ -92,6 +92,7 @@ export function VerseDetailWrapper({
       onNavigate={handleNavigation}
       selectedTab={currentTab}
       onTabChange={handleTabChange}
+      scriptureSlug={scriptureSlug}
     />
   )
 } 

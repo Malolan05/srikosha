@@ -1,12 +1,9 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useSearchParams } from "next/navigation"
-import { Card, CardContent } from "@/components/ui/card"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useSearchParams, useRouter, usePathname } from "next/navigation"
 import type { Scripture, ScriptureContent } from "@/lib/types"
-import VerseDisplay from "@/components/verse-display"
-import { Button } from "@/components/ui/button"
+import VerseDetail from "@/components/verse-detail"
 
 interface ScriptureViewerProps {
   scripture: Scripture
@@ -14,147 +11,72 @@ interface ScriptureViewerProps {
 }
 
 export default function ScriptureViewer({ scripture, content }: ScriptureViewerProps) {
+  const router = useRouter()
+  const pathname = usePathname()
   const searchParams = useSearchParams()
   const verseParam = searchParams.get("verse")
-  const [mounted, setMounted] = useState(false)
+  const commentaryParam = searchParams.get("commentary")
   const [currentVerseIndex, setCurrentVerseIndex] = useState(0)
-  const [selectedCommentary, setSelectedCommentary] = useState("")
+  const [selectedTab, setSelectedTab] = useState("original")
 
-  useEffect(() => {
-    setMounted(true)
-    // Initialize selected commentary after mounting
-    if (content.verses[0]?.commentaries[0]?.author) {
-      setSelectedCommentary(content.verses[0].commentaries[0].author)
-    }
-  }, [content.verses])
-
-  // Handle direct navigation to a specific verse
+  // Initialize state from URL parameters
   useEffect(() => {
     if (verseParam) {
       const verseNumber = Number.parseInt(verseParam, 10)
       const index = content.verses.findIndex((v) => v.verse_number === verseNumber)
       if (index !== -1) {
         setCurrentVerseIndex(index)
-        // Update selected commentary if the current one doesn't exist in the new verse
-        const newVerse = content.verses[index]
-        if (!newVerse.commentaries.some((c) => c.author === selectedCommentary)) {
-          setSelectedCommentary(newVerse.commentaries[0]?.author || "")
-        }
       }
     }
-  }, [verseParam, content.verses, selectedCommentary])
+  }, [verseParam, content.verses])
 
   const currentVerse = content.verses[currentVerseIndex]
   const totalVerses = content.verses.length
 
-  const handlePreviousVerse = () => {
-    if (currentVerseIndex > 0) {
-      setCurrentVerseIndex(currentVerseIndex - 1)
-      // Update selected commentary if the current one doesn't exist in the new verse
-      const newVerse = content.verses[currentVerseIndex - 1]
-      if (!newVerse.commentaries.some((c) => c.author === selectedCommentary)) {
-        setSelectedCommentary(newVerse.commentaries[0]?.author || "")
-      }
-    }
+  const handleVerseChange = (direction: "prev" | "next") => {
+    const newVerseNumber = direction === "next" ? currentVerseIndex + 1 : currentVerseIndex - 1
+    const newUrl = new URL(window.location.href)
+    newUrl.pathname = `/scripture/${scripture.metadata.slug}/verse/${newVerseNumber}`
+    
+    // Preserve all existing search params
+    const currentSearchParams = new URLSearchParams(window.location.search)
+    currentSearchParams.forEach((value, key) => {
+      newUrl.searchParams.set(key, value)
+    })
+    
+    // Use router.push instead of window.history.pushState
+    router.push(newUrl.toString())
   }
 
-  const handleNextVerse = () => {
-    if (currentVerseIndex < totalVerses - 1) {
-      setCurrentVerseIndex(currentVerseIndex + 1)
-      // Update selected commentary if the current one doesn't exist in the new verse
-      const newVerse = content.verses[currentVerseIndex + 1]
-      if (!newVerse.commentaries.some((c) => c.author === selectedCommentary)) {
-        setSelectedCommentary(newVerse.commentaries[0]?.author || "")
-      }
-    }
+  const handleTabChange = (value: string) => {
+    setSelectedTab(value)
   }
 
-  if (!mounted) {
-    return (
-      <div className="space-y-6">
-        <div className="flex justify-between items-center">
-          <Button onClick={handlePreviousVerse} disabled={currentVerseIndex === 0}>
-            Previous Verse
-          </Button>
-          <span className="text-sm text-muted-foreground">
-            Verse {currentVerse.verse_number} of {totalVerses}
-          </span>
-          <Button onClick={handleNextVerse} disabled={currentVerseIndex === totalVerses - 1}>
-            Next Verse
-          </Button>
-        </div>
-
-        <VerseDisplay verse={{
-          original: currentVerse.original_text,
-          transliteration: currentVerse.iast_text || "",
-          translation: currentVerse.english_translation || ""
-        }} />
-
-        {currentVerse.commentaries.length > 0 && (
-          <div className="mt-8 pt-6 border-t">
-            <h3 className="text-lg font-semibold mb-4">Commentaries</h3>
-            <Select value={currentVerse.commentaries[0]?.author || ""} onValueChange={() => {}}>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select a commentary" />
-              </SelectTrigger>
-              <SelectContent>
-                {currentVerse.commentaries.map((commentary) => (
-                  <SelectItem key={commentary.author} value={commentary.author}>
-                    {commentary.author}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <div className="mt-4 prose prose-zinc dark:prose-invert">
-              {currentVerse.commentaries[0]?.commentary}
-            </div>
-          </div>
-        )}
-      </div>
-    )
-  }
+  // Transform commentaries into the format expected by VerseDetail
+  const commentaries = currentVerse.commentaries.reduce((acc, c) => ({
+    ...acc,
+    [c.author]: c.commentary
+  }), {})
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <Button onClick={handlePreviousVerse} disabled={currentVerseIndex === 0}>
-          Previous Verse
-        </Button>
-        <span className="text-sm text-muted-foreground">
-          Verse {currentVerse.verse_number} of {totalVerses}
-        </span>
-        <Button onClick={handleNextVerse} disabled={currentVerseIndex === totalVerses - 1}>
-          Next Verse
-        </Button>
-      </div>
-
-      <VerseDisplay verse={{
+    <VerseDetail
+      verse={{
+        number: currentVerse.verse_number,
         original: currentVerse.original_text,
         transliteration: currentVerse.iast_text || "",
-        translation: currentVerse.english_translation || ""
-      }} />
-
-      {currentVerse.commentaries.length > 0 && (
-        <div className="mt-8 pt-6 border-t">
-          <h3 className="text-lg font-semibold mb-4">Commentaries</h3>
-          <Select value={selectedCommentary} onValueChange={setSelectedCommentary}>
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select a commentary" />
-            </SelectTrigger>
-            <SelectContent>
-              {currentVerse.commentaries.map((commentary) => (
-                <SelectItem key={commentary.author} value={commentary.author}>
-                  {commentary.author}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <div className="mt-4 prose prose-zinc dark:prose-invert">
-            {currentVerse.commentaries.find(c => c.author === selectedCommentary)?.commentary}
-          </div>
-        </div>
-      )}
-    </div>
+        translation: currentVerse.english_translation || "",
+        commentaries,
+        sectionInfo: undefined // We don't have section info in the current data structure
+      }}
+      hasNextVerse={currentVerseIndex < totalVerses - 1}
+      hasPrevVerse={currentVerseIndex > 0}
+      totalVerses={totalVerses}
+      onNavigate={handleVerseChange}
+      selectedTab={selectedTab}
+      onTabChange={handleTabChange}
+      scriptureSlug={scripture.metadata.slug}
+      initialCommentaries={commentaryParam ? commentaryParam.split(',') : undefined}
+    />
   )
 }
 

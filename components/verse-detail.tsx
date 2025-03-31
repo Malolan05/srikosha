@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import {
@@ -15,6 +15,8 @@ import VerseDisplay from "@/components/verse-display"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import ScriptText from "@/components/script-text"
 import { ChevronsUpDown } from "lucide-react"
+import { useSearchParams } from "next/navigation"
+import { useRouter } from "next/navigation"
 
 export interface VerseDetailProps {
   verse: {
@@ -34,28 +36,81 @@ export interface VerseDetailProps {
   onNavigate: (direction: "prev" | "next") => void
   selectedTab: string
   onTabChange: (value: string) => void
+  scriptureSlug: string
+  initialCommentaries?: string[]
 }
 
-export function VerseDetail({ 
+export default function VerseDetail({ 
   verse, 
   hasNextVerse, 
   hasPrevVerse, 
   totalVerses, 
   onNavigate,
   selectedTab,
-  onTabChange
+  onTabChange,
+  scriptureSlug,
+  initialCommentaries
 }: VerseDetailProps) {
-  const [selectedCommentators, setSelectedCommentators] = useState<string[]>([
-    Object.keys(verse.commentaries)[0]
-  ])
+  const searchParams = useSearchParams()
+  const commentaryParam = searchParams.get("commentary")
+  const [selectedCommentators, setSelectedCommentators] = useState<string[]>([])
+  const router = useRouter()
 
-  const commentators = Object.keys(verse.commentaries)
+  useEffect(() => {
+    // Initialize selected commentators from URL or first available
+    const commentators = Object.keys(verse.commentaries)
+    if (commentators.length > 0) {
+      if (initialCommentaries) {
+        // Use the initial commentaries if provided
+        const selected = initialCommentaries.filter(c => commentators.includes(c))
+        setSelectedCommentators(selected.length > 0 ? selected : [commentators[0]])
+      } else if (commentaryParam) {
+        // Fall back to URL param if no initial commentaries
+        const selected = commentaryParam.split(',').filter(c => commentators.includes(c))
+        setSelectedCommentators(selected.length > 0 ? selected : [commentators[0]])
+      } else {
+        // Default to first commentary if no selection
+        setSelectedCommentators([commentators[0]])
+      }
+    } else {
+      // If no commentaries available, clear selection
+      setSelectedCommentators([])
+    }
+  }, [commentaryParam, verse.commentaries, verse.number, initialCommentaries])
+
+  const handleCommentaryChange = (value: string) => {
+    const commentators = Object.keys(verse.commentaries)
+    let newSelected: string[]
+    
+    if (value === "all") {
+      newSelected = commentators
+    } else {
+      newSelected = selectedCommentators.includes(value)
+        ? selectedCommentators.filter(c => c !== value)
+        : [...selectedCommentators, value]
+      
+      // Don't allow deselecting if it's the last selected item
+      if (newSelected.length === 0) {
+        newSelected = [value]
+      }
+    }
+    
+    setSelectedCommentators(newSelected)
+    
+    // Use router.push instead of window.history.pushState
+    const url = new URL(window.location.href)
+    // Always set the commentary parameter, even for "all"
+    url.searchParams.set("commentary", newSelected.join(','))
+    router.push(url.toString())
+  }
 
   // Format the verse number based on the section path
   const getFormattedVerseNumber = () => {
     if (!verse.sectionInfo?.path) return `Verse ${verse.number}`
     return `Verse ${[...verse.sectionInfo.path, verse.number].join('.')}`
   }
+
+  const commentators = Object.keys(verse.commentaries)
 
   return (
     <Card className="w-full max-w-4xl mx-auto">
@@ -95,31 +150,24 @@ export function VerseDetail({
           <Tabs value={selectedTab} onValueChange={onTabChange} className="w-full">
             <TabsList className="w-full justify-start mb-4 sm:mb-6">
               <TabsTrigger value="original" className="flex-1">Original</TabsTrigger>
-              {verse.transliteration && verse.transliteration.trim().length > 0 && (
+              {verse.transliteration && (
                 <TabsTrigger value="transliteration" className="flex-1">Transliteration</TabsTrigger>
               )}
-              {verse.translation && verse.translation.trim().length > 0 && (
+              {verse.translation && (
                 <TabsTrigger value="translation" className="flex-1">Translation</TabsTrigger>
               )}
             </TabsList>
-
-            <TabsContent value="original" className="text-base sm:text-lg">
-              <div className="break-words whitespace-pre-wrap">
-                <ScriptText text={verse.original} />
-              </div>
+            <TabsContent value="original">
+              <ScriptText text={verse.original} />
             </TabsContent>
-            {verse.transliteration && verse.transliteration.trim().length > 0 && (
-              <TabsContent value="transliteration" className="text-base sm:text-lg">
-                <div className="break-words whitespace-pre-wrap">
-                  <ScriptText text={verse.transliteration} isTransliteration />
-                </div>
+            {verse.transliteration && (
+              <TabsContent value="transliteration">
+                <ScriptText text={verse.transliteration} />
               </TabsContent>
             )}
-            {verse.translation && verse.translation.trim().length > 0 && (
-              <TabsContent value="translation" className="text-base sm:text-lg">
-                <div className="break-words whitespace-pre-wrap text-xl sm:text-xl leading-relaxed">
-                  {verse.translation}
-                </div>
+            {verse.translation && (
+              <TabsContent value="translation">
+                <ScriptText text={verse.translation} />
               </TabsContent>
             )}
           </Tabs>
@@ -130,21 +178,7 @@ export function VerseDetail({
             <h3 className="text-xl sm:text-2xl font-bold text-primary mb-3 sm:mb-4">Commentaries</h3>
             <Select
               value={selectedCommentators.length === commentators.length ? "all" : "default"}
-              onValueChange={(value) => {
-                if (value === "all") {
-                  setSelectedCommentators(commentators)
-                  return
-                }
-                const commentator = value
-                setSelectedCommentators((prev) => {
-                  if (prev.includes(commentator)) {
-                    // Don't allow deselecting if it's the last selected item
-                    if (prev.length === 1) return prev
-                    return prev.filter((item) => item !== commentator)
-                  }
-                  return [...prev, commentator]
-                })
-              }}
+              onValueChange={handleCommentaryChange}
             >
               <SelectTrigger className="w-full sm:w-[250px] mb-3 sm:mb-4 bg-background text-base">
                 <SelectValue>
