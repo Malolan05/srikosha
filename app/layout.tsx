@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils"
 import { ThemeProvider } from "@/components/theme-provider"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const fontSans = Inter({
   subsets: ["latin"],
@@ -29,6 +30,7 @@ export default function RootLayout({
             <Header />
             <main className="flex-1 flex flex-col">{children}</main>
             <Footer />
+            <SpeedInsights />
           </div>
         </ThemeProvider>
       </body>
