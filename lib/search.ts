@@ -1,7 +1,7 @@
 import { getAllScriptures } from "@/lib/utils";
 
-// Type definitions for clarity (adjust to your actual types)
-interface SearchResult {
+// Exported type for use in other files
+export interface SearchResult {
   scriptureSlug: string;
   scriptureName: string;
   verseNumber: number;
@@ -11,6 +11,10 @@ interface SearchResult {
   commentaryAuthor?: string;
 }
 
+/**
+ * Searches all verses and commentaries for the given query string.
+ * Returns an array of matches with relevant details.
+ */
 export async function searchVersesAndCommentaries(query: string): Promise<SearchResult[]> {
   if (!query.trim()) return [];
   const q = query.toLowerCase();
@@ -20,10 +24,10 @@ export async function searchVersesAndCommentaries(query: string): Promise<Search
   for (const scripture of scriptures) {
     for (const section of scripture.content.sections || []) {
       for (const verse of section.verses || []) {
-        // Verse match
+        // Search for a match in the verse text (original or translation)
         if (
-          verse.original_text?.toLowerCase().includes(q) ||
-          verse.english_translation?.toLowerCase().includes(q)
+          (verse.original_text && verse.original_text.toLowerCase().includes(q)) ||
+          (verse.english_translation && verse.english_translation.toLowerCase().includes(q))
         ) {
           results.push({
             scriptureSlug: scripture.metadata.slug,
@@ -31,14 +35,15 @@ export async function searchVersesAndCommentaries(query: string): Promise<Search
             verseNumber: verse.verse_number,
             verseText: verse.english_translation || verse.original_text || "",
             matchType: "verse",
-            matchText: verse.english_translation?.toLowerCase().includes(q)
-              ? verse.english_translation
-              : verse.original_text,
+            matchText:
+              verse.english_translation?.toLowerCase().includes(q)
+                ? verse.english_translation
+                : verse.original_text || "",
           });
         }
-        // Commentary match
+        // Search for a match in commentaries
         for (const comm of verse.commentaries || []) {
-          if (comm.commentary?.toLowerCase().includes(q)) {
+          if (comm.commentary && comm.commentary.toLowerCase().includes(q)) {
             results.push({
               scriptureSlug: scripture.metadata.slug,
               scriptureName: scripture.metadata.scripture_name,
