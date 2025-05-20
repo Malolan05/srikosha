@@ -1,11 +1,11 @@
 "use client";
 import { useState } from "react";
-import { searchVersesAndCommentaries } from "@/lib/search";
+import { searchVersesAndCommentaries, type SearchResult } from "@/lib/search";
 import SearchResults from "@/components/search-results";
 
 export default function SearchPage() {
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<SearchResult[]>([]); // <-- Type added here
   const [loading, setLoading] = useState(false);
 
   async function handleSearch(e: React.FormEvent<HTMLFormElement>) {
