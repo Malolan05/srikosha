@@ -1,28 +1,7 @@
-"use client";  
-import { Card, CardContent } from "@/components/ui/card"
-import { Construction } from "lucide-react"
+"use client";
 import { useState } from "react";
 import { searchVersesAndCommentaries } from "@/lib/search";
 import SearchResults from "@/components/search-results";
-
-export default function SearchPage() {
-  return (
-    <div className="container mx-auto px-4 py-12">
-      <div className="max-w-4xl mx-auto">
-        <Card className="text-center p-12">
-          <CardContent className="space-y-6">
-            <Construction className="h-16 w-16 mx-auto text-primary" />
-            <h1 className="text-3xl font-bold text-primary">We're Still Working on Search</h1>
-            <p className="text-muted-foreground max-w-lg mx-auto">
-              We're currently building a powerful search feature to help you find exactly what you're looking for. 
-              Check back soon for updates!
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  )
-}
 
 export default function SearchPage() {
   const [query, setQuery] = useState("");
@@ -38,12 +17,23 @@ export default function SearchPage() {
   }
 
   return (
-    <div>
-      <form onSubmit={handleSearch}>
-        <input value={query} onChange={e => setQuery(e.target.value)} placeholder="Search…" />
-        <button type="submit">Search</button>
+    <div className="container mx-auto px-4 py-12">
+      <form onSubmit={handleSearch} className="mb-6">
+        <input
+          className="border rounded px-3 py-2 w-full"
+          placeholder="Search verses or commentaries…"
+          value={query}
+          onChange={e => setQuery(e.target.value)}
+        />
+        <button type="submit" className="mt-2 px-4 py-2 bg-primary text-white rounded">
+          Search
+        </button>
       </form>
-      <SearchResults results={results} query={query} />
+      {loading ? (
+        <div>Searching…</div>
+      ) : (
+        <SearchResults results={results} query={query} />
+      )}
     </div>
   );
 }
