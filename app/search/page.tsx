@@ -1,5 +1,9 @@
+"use client";  
 import { Card, CardContent } from "@/components/ui/card"
 import { Construction } from "lucide-react"
+import { useState } from "react";
+import { searchVersesAndCommentaries } from "@/lib/search";
+import SearchResults from "@/components/search-results";
 
 export default function SearchPage() {
   return (
@@ -19,10 +23,6 @@ export default function SearchPage() {
     </div>
   )
 }
-"use client";
-import { useState } from "react";
-import { searchVersesAndCommentaries } from "@/lib/search";
-import SearchResults from "@/components/search-results";
 
 export default function SearchPage() {
   const [query, setQuery] = useState("");
