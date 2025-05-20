@@ -8,7 +8,7 @@ export default function SearchPage() {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  async function handleSearch(e) {
+  async function handleSearch(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
     const res = await searchVersesAndCommentaries(query);
