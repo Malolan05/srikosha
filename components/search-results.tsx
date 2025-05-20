@@ -1,21 +1,29 @@
 import Link from "next/link";
+import type { SearchResult } from "@/lib/search";
 
-export default function SearchResults({ results, query }) {
+interface SearchResultsProps {
+  results: SearchResult[];
+  query: string;
+}
+
+export default function SearchResults({ results, query }: SearchResultsProps) {
   if (!results.length && query) return <div>No results found.</div>;
   if (!results.length) return null;
 
   return (
     <div>
       {results.map((res, i) => (
-        <div key={i}>
+        <div key={i} className="mb-6 border-b pb-4">
           <Link href={`/scripture/${res.scriptureSlug}/verse/${res.verseNumber}`}>
-            {res.scriptureName} - Verse {res.verseNumber}
+            <span className="font-semibold text-primary">
+              {res.scriptureName} – Verse {res.verseNumber}
+            </span>
           </Link>
-          <div>{res.verseText}</div>
+          <div className="mt-1">{res.verseText}</div>
           {res.matchType === "commentary" && (
-            <div>
+            <div className="mt-2 text-sm text-muted-foreground">
               Commentary by {res.commentaryAuthor}:<br />
-              {res.matchText}
+              <span className="italic">{res.matchText}</span>
             </div>
           )}
         </div>
