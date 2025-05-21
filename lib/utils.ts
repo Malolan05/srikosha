@@ -16,8 +16,6 @@ import brahmaSutraAdhyayaFour from '@/data/scriptures/brahma-sutra-adhyaya-four.
 import purushakaramimamsa from '@/data/scriptures/purushakara-mimamsa.json'
 import stotraratna from '@/data/scriptures/stotraratna.json'
 import vedarthasangraha from '@/data/scriptures/vedarthasangraha.json'
-import bhagavadgita from '@/data/scriptures/bhagavad-gita.json'
-
 // Create a map of all scriptures
 const scripturesData: Scripture[] = [
   sriParameshvaraSamhita,
@@ -28,8 +26,7 @@ const scripturesData: Scripture[] = [
   brahmaSutraAdhyayaFour,
   purushakaramimamsa,
   stotraratna,
-  vedarthasangraha,
-  bhagavadgita
+  vedarthasangraha
 ]
 
 export function getScriptType(text: string): 'devanagari' | 'tamil' | 'latin' | 'mixed' {
