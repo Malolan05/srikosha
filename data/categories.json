@@ -16,5 +16,10 @@
     "slug": "theology",
     "description": "The Theological essence of Sampradāya",
     "longDescription": "Texts discussing and defining the Theology of Sampradaya"
+  },
+  {"name": "Stotra",
+    "slug": "stotra",
+    "description": "The essence of Sampradāya conveyed through Ślōkās praising Śrimannārāyaṇa and Ācāryas",
+    "longDescription": "..."
   }
 ] 
