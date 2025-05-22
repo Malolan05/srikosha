@@ -21,5 +21,10 @@
     "slug": "stotra",
     "description": "Ślōkās praising Śrimannārāyaṇa and Ācāryas",
     "longDescription": "The essence of Sampradāya conveyed through Ślokās on Śrimannārāyaṇa by pūrvācāryas"
+  },
+  {"name": "Auxilliary Texts",
+    "slug": "auxilliary-texts",
+    "description": "Granthas aiding the Śrivaiṣṇava understanding",
+    "longDescription": "Collection of Granthas authored by Śrivaiṣṇava Pūrvācāryā's discussing the fine details and the vādā's surrounding it"
   }
 ] 
