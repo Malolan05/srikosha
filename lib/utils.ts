@@ -17,7 +17,7 @@ import purushakaramimamsa from '@/data/scriptures/purushakara-mimamsa.json'
 import stotraratna from '@/data/scriptures/stotraratna.json'
 import vedarthasangraha from '@/data/scriptures/vedarthasangraha.json'
 import bhagavadgita from '@/data/scriptures/bhagavad-gita.json'
-import natvachandrika from '@/data/scriptures/natvacandrika.json'
+import natvachandrikapramukhacapetika from '@/data/scriptures/natvacandrika-pramukhacapetika.json'
 
 // Create a map of all scriptures
 const scripturesData: Scripture[] = [
@@ -31,7 +31,7 @@ const scripturesData: Scripture[] = [
   stotraratna,
   vedarthasangraha,
   bhagavadgita,
-  natvachandrika
+  natvachandrikapramukhacapetika
 ]
 
 export function getScriptType(text: string): 'devanagari' | 'tamil' | 'latin' | 'mixed' {
