@@ -1,5 +1,4 @@
-# Detailed Explanation of the `Malolan05/srikosha` Repository
-
+**README**
 ## Overview
 
 **Śrīkoṣa** is a web application designed for the exploration and study of the sacred texts of the Śrī Vaiṣṇava Sampradāya, a tradition within Hinduism. The core goal of the project is to provide a modern, user-friendly interface for browsing, reading, and engaging with a curated collection of scriptures and related resources.
