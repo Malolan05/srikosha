@@ -1,6 +1,6 @@
 "use client";
-
 import React, { useState, useEffect } from 'react';
+
 
 const Card = ({ children, className }) => (
   <div className={`bg-white rounded-xl shadow-lg ${className}`}>
@@ -43,6 +43,7 @@ export default function SearchPage() {
   const [isLoading, setIsLoading] = useState(true); 
   const [error, setError] = useState(null); 
   const [showPlaceholder, setShowPlaceholder] = useState(true); 
+
   useEffect(() => {
     const fetchScriptures = async () => {
       try {
@@ -61,7 +62,8 @@ export default function SearchPage() {
     };
 
     fetchScriptures();
-  }, []); 
+  }, []);
+
 
   const handleSearch = () => {
     if (searchTerm.trim() === '') {
@@ -81,6 +83,7 @@ export default function SearchPage() {
     );
     setSearchResults(filteredResults);
   };
+
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
@@ -104,7 +107,7 @@ export default function SearchPage() {
       <div className="container mx-auto max-w-4xl">
         <div className="flex flex-col items-center space-y-8 w-full">
 
-          {}
+          {/* Search Input Section */}
           <div className="w-full max-w-2xl">
             <div className="flex items-center space-x-4 p-4 bg-white rounded-xl shadow-md">
               <input
@@ -124,7 +127,7 @@ export default function SearchPage() {
             </div>
           </div>
 
-          {}
+          {/* Conditional Rendering: Loading, Error, Placeholder, or Search Results */}
           {isLoading ? (
             <Card className="text-center p-12 w-full max-w-2xl">
               <CardContent className="space-y-6">
@@ -160,6 +163,7 @@ export default function SearchPage() {
                       <p className="text-lg font-semibold text-gray-900">{item.book} {item.chapter}:{item.verse_number}</p>
                       {item.original_text && <p className="text-gray-700 mt-1 text-right font-serif">{item.original_text}</p>}
                       {item.english_translation && <p className="text-gray-700 mt-1">{item.english_translation}</p>}
+                      {}
                       {item.commentaries_text && item.commentaries_text.length > 0 && (
                         <div className="mt-2 pt-2 border-t border-gray-200 text-sm text-gray-500 italic">
                           <p>Commentaries: {item.commentaries_text.substring(0, 200)}...</p> {}
