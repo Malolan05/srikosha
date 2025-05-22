@@ -113,4 +113,3 @@ interface Scripture {
 
 ---
 
-**If you have more specific questions about any part of the codebase or functionality, let me know!**
