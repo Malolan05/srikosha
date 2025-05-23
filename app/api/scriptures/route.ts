@@ -7,7 +7,7 @@ export async function GET(request: Request) {
     const dataDirectory = path.join(process.cwd(), 'data', 'scriptures');
     const filenames = await fs.readdir(dataDirectory);
 
-    let allSearchableVerses = [];
+    let allSearchableVerses: any[] = [];
 
     for (const filename of filenames) {
       if (filename.endsWith('.json')) {
