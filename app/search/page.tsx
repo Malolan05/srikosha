@@ -1,29 +1,31 @@
 "use client";
-import React, {
-  useState,
-  useEffect,
-  ReactNode,
-  KeyboardEvent,
-} from "react";
 
-interface CardProps {
-  children: ReactNode;
+import React, { useState, useEffect, KeyboardEvent } from "react";
+
+interface ComponentProps {
+  children: React.ReactNode;
   className?: string;
 }
 
-const Card = ({ children, className = "" }: CardProps) => (
+interface ScriptureItem {
+  id: string;
+  book: string;
+  chapter: string;
+  verse_number: string;
+  original_text?: string;
+  english_translation?: string;
+  commentaries_text?: string;
+}
+
+const Card = ({ children, className = "" }: ComponentProps) => (
   <div className={`bg-white rounded-xl shadow-lg ${className}`}>{children}</div>
 );
 
-const CardContent = ({ children, className = "" }: CardProps) => (
+const CardContent = ({ children, className = "" }: ComponentProps) => (
   <div className={`p-6 ${className}`}>{children}</div>
 );
 
-interface IconProps {
-  className?: string;
-}
-
-const ConstructionIcon = ({ className = "" }: IconProps) => (
+const ConstructionIcon = ({ className = "" }: { className?: string }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -43,16 +45,6 @@ const ConstructionIcon = ({ className = "" }: IconProps) => (
   </svg>
 );
 
-interface ScriptureItem {
-  id: string;
-  book?: string;
-  chapter?: number;
-  verse_number?: number;
-  original_text?: string;
-  english_translation?: string;
-  commentaries_text?: string;
-}
-
 export default function SearchPage() {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [scriptureData, setScriptureData] = useState<ScriptureItem[]>([]);
@@ -68,10 +60,10 @@ export default function SearchPage() {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const data: ScriptureItem[] = await response.json();
+        const data = await response.json();
         setScriptureData(data);
       } catch (err: any) {
-        setError(err.message);
+        setError(err.message || "Unknown error");
         console.error("Failed to fetch scriptures:", err);
       } finally {
         setIsLoading(false);
@@ -89,17 +81,16 @@ export default function SearchPage() {
     }
 
     setShowPlaceholder(false);
-
-    const lowerCaseSearchTerm = searchTerm.toLowerCase();
-    const filteredResults = scriptureData.filter((item) =>
-      item.book?.toLowerCase().includes(lowerCaseSearchTerm) ||
-      item.original_text?.toLowerCase().includes(lowerCaseSearchTerm) ||
-      item.english_translation?.toLowerCase().includes(lowerCaseSearchTerm) ||
-      item.commentaries_text?.toLowerCase().includes(lowerCaseSearchTerm) ||
-      item.id?.toLowerCase().includes(lowerCaseSearchTerm)
+    const lower = searchTerm.toLowerCase();
+    const filtered = scriptureData.filter(
+      (item) =>
+        item.book?.toLowerCase().includes(lower) ||
+        item.original_text?.toLowerCase().includes(lower) ||
+        item.english_translation?.toLowerCase().includes(lower) ||
+        item.commentaries_text?.toLowerCase().includes(lower) ||
+        item.id?.toLowerCase().includes(lower)
     );
-
-    setSearchResults(filteredResults);
+    setSearchResults(filtered);
   };
 
   const handleKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
@@ -153,8 +144,7 @@ export default function SearchPage() {
                 <ConstructionIcon className="h-16 w-16 mx-auto text-blue-600" />
                 <h1 className="text-3xl font-bold text-blue-600">We're Still Working on Search</h1>
                 <p className="text-gray-600 max-w-lg mx-auto">
-                  We're currently building a powerful search feature to help you find exactly what
-                  you're looking for. Check back soon for updates!
+                  We're currently building a powerful search feature to help you find exactly what you're looking for.
                 </p>
               </CardContent>
             </Card>
@@ -172,18 +162,14 @@ export default function SearchPage() {
                         {item.book} {item.chapter}:{item.verse_number}
                       </p>
                       {item.original_text && (
-                        <p className="text-gray-700 mt-1 text-right font-serif">
-                          {item.original_text}
-                        </p>
+                        <p className="text-gray-700 mt-1 text-right font-serif">{item.original_text}</p>
                       )}
                       {item.english_translation && (
                         <p className="text-gray-700 mt-1">{item.english_translation}</p>
                       )}
                       {item.commentaries_text && item.commentaries_text.length > 0 && (
                         <div className="mt-2 pt-2 border-t border-gray-200 text-sm text-gray-500 italic">
-                          <p>
-                            Commentaries: {item.commentaries_text.substring(0, 200)}...
-                          </p>
+                          <p>Commentaries: {item.commentaries_text.substring(0, 200)}...</p>
                         </div>
                       )}
                     </li>
