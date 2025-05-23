@@ -2,19 +2,20 @@
 
 import React, { useState, useEffect } from 'react';
 
-const Card = ({ children, className = "" }) => (
-  <div className={`bg-white rounded-xl shadow-lg ${className}`}>
+const Card = ({ children, className }) => (
+  <div className={bg-white rounded-xl shadow-lg ${className}}>
     {children}
   </div>
 );
 
-const CardContent = ({ children, className = "" }) => (
-  <div className={`p-6 ${className}`}>
+const CardContent = ({ children, className }) => (
+  <div className={p-6 ${className}}>
     {children}
   </div>
 );
 
-const ConstructionIcon = ({ className = "" }) => (
+
+const ConstructionIcon = ({ className }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -34,6 +35,7 @@ const ConstructionIcon = ({ className = "" }) => (
   </svg>
 );
 
+
 export default function SearchPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [scriptureData, setScriptureData] = useState([]); 
@@ -41,13 +43,12 @@ export default function SearchPage() {
   const [isLoading, setIsLoading] = useState(true); 
   const [error, setError] = useState(null); 
   const [showPlaceholder, setShowPlaceholder] = useState(true); 
-
   useEffect(() => {
     const fetchScriptures = async () => {
       try {
         const response = await fetch('/api/scriptures');
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          throw new Error(HTTP error! status: ${response.status});
         }
         const data = await response.json();
         setScriptureData(data);
@@ -89,37 +90,41 @@ export default function SearchPage() {
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center py-12 px-4 font-sans">
-      {/* Move these to your global CSS or layout file */}
-      <style jsx>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-        body {
-          font-family: 'Inter', sans-serif;
-        }
-      `}</style>
+      {}
+      <script src="https://cdn.tailwindcss.com"></script>
+      <style>
+        {`
+          @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+          body {
+            font-family: 'Inter', sans-serif;
+          }
+        `}
+      </style>
 
       <div className="container mx-auto max-w-4xl">
         <div className="flex flex-col items-center space-y-8 w-full">
-          {/* Search Input */}
+
+          {}
           <div className="w-full max-w-2xl">
-            <div className="flex items-center gap-4 p-4 bg-white rounded-xl shadow-md">
+            <div className="flex items-center space-x-4 p-4 bg-white rounded-xl shadow-md">
               <input
                 type="text"
                 placeholder="Search scriptures by book, verse, translation, or commentary..."
                 className="flex-grow p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                onKeyDown={handleKeyPress}
+                onKeyPress={handleKeyPress}
               />
               <button
                 onClick={handleSearch}
-                className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
+                className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200 ease-in-out"
               >
                 Search
               </button>
             </div>
           </div>
 
-          {/* Results Section */}
+          {}
           {isLoading ? (
             <Card className="text-center p-12 w-full max-w-2xl">
               <CardContent className="space-y-6">
@@ -128,10 +133,10 @@ export default function SearchPage() {
               </CardContent>
             </Card>
           ) : error ? (
-            <Card className="text-center p-12 w-full max-w-2xl bg-red-50 border border-red-200">
+            <Card className="text-center p-12 w-full max-w-2xl bg-red-100 border border-red-400">
               <CardContent className="space-y-6">
                 <p className="text-xl font-semibold text-red-700">Error: {error}</p>
-                <p className="text-red-600">Could not load scripture data. Please try again later.</p>
+                <p className="text-red-600">Could not load scripture data. Please check the API route and JSON files.</p>
               </CardContent>
             </Card>
           ) : showPlaceholder ? (
@@ -146,46 +151,26 @@ export default function SearchPage() {
               </CardContent>
             </Card>
           ) : (
-            <div className="w-full max-w-2xl bg-white rounded-xl shadow-md overflow-hidden">
-              <div className="p-6">
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">Search Results</h2>
-                {searchResults.length > 0 ? (
-                  <ul className="space-y-4">
-                    {searchResults.map((item) => (
-                      <li 
-                        key={item.id} 
-                        className="p-4 border border-gray-200 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors duration-150"
-                      >
-                        <p className="text-lg font-semibold text-gray-900">
-                          {item.book} {item.chapter}:{item.verse_number}
-                        </p>
-                        {item.original_text && (
-                          <p className="text-gray-700 mt-1 text-right font-serif">
-                            {item.original_text}
-                          </p>
-                        )}
-                        {item.english_translation && (
-                          <p className="text-gray-700 mt-1">
-                            {item.english_translation}
-                          </p>
-                        )}
-                        {item.commentaries_text && (
-                          <div className="mt-2 pt-2 border-t border-gray-200">
-                            <p className="text-sm text-gray-600">
-                              <span className="font-medium">Commentary:</span> {item.commentaries_text.substring(0, 200)}
-                              {item.commentaries_text.length > 200 && "..."}
-                            </p>
-                          </div>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="text-gray-600 text-center py-8">
-                    No results found for "{searchTerm}". Try a different search term.
-                  </p>
-                )}
-              </div>
+            <div className="w-full max-w-2xl bg-white rounded-xl shadow-md p-6 mt-8">
+              <h2 className="text-2xl font-bold text-gray-800 mb-4">Search Results:</h2>
+              {searchResults.length > 0 ? (
+                <ul className="space-y-4">
+                  {searchResults.map((item) => (
+                    <li key={item.id} className="p-4 border border-gray-200 rounded-lg bg-gray-50 hover:bg-gray-100 transition duration-150 ease-in-out">
+                      <p className="text-lg font-semibold text-gray-900">{item.book} {item.chapter}:{item.verse_number}</p>
+                      {item.original_text && <p className="text-gray-700 mt-1 text-right font-serif">{item.original_text}</p>}
+                      {item.english_translation && <p className="text-gray-700 mt-1">{item.english_translation}</p>}
+                      {item.commentaries_text && item.commentaries_text.length > 0 && (
+                        <div className="mt-2 pt-2 border-t border-gray-200 text-sm text-gray-500 italic">
+                          <p>Commentaries: {item.commentaries_text.substring(0, 200)}...</p> {}
+                        </div>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-gray-600 text-center py-8">No results found for "{searchTerm}". Try a different search term.</p>
+              )}
             </div>
           )}
         </div>
