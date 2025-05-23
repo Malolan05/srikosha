@@ -2,47 +2,12 @@ import path from 'path';
 import { promises as fs } from 'fs';
 import { NextResponse } from 'next/server';
 
-// Define interfaces for your data structure
-interface Verse {
-  verse_number: string | number;
-  original_text: string;
-  english_translation: string;
-  commentaries?: Array<{ commentary?: string } | string>;
-}
-
-interface Section {
-  number: number | string;
-  verses: Verse[];
-}
-
-interface ScriptureContent {
-  sections: Section[];
-}
-
-interface ScriptureDoc {
-  metadata?: {
-    scripture_name?: string;
-    slug?: string;
-  };
-  content?: ScriptureContent;
-}
-
-interface SearchableVerse {
-  id: string;
-  book: string;
-  chapter: number | string;
-  verse_number: string | number;
-  original_text: string;
-  english_translation: string;
-  commentaries_text: string;
-}
-
 export async function GET(request: Request) {
   try {
     const dataDirectory = path.join(process.cwd(), 'data', 'scriptures');
     const filenames = await fs.readdir(dataDirectory);
 
-    let allSearchableVerses: SearchableVerse[] = [];
+    let allSearchableVerses = [];
 
     for (const filename of filenames) {
       if (filename.endsWith('.json')) {
@@ -50,18 +15,18 @@ export async function GET(request: Request) {
         const fileContents = await fs.readFile(filePath, 'utf8');
 
         try {
-          const scriptureDoc: ScriptureDoc = JSON.parse(fileContents);
+          const scriptureDoc = JSON.parse(fileContents);
           const bookName = scriptureDoc.metadata?.scripture_name || 'Unknown Scripture';
           const slug = scriptureDoc.metadata?.slug || 'unknown-slug';
 
-          if (scriptureDoc.content?.sections) {
-            scriptureDoc.content.sections.forEach((section: Section) => {
-              if (section.verses) {
-                section.verses.forEach((verse: Verse) => {
+          if (scriptureDoc.content && Array.isArray(scriptureDoc.content.sections)) {
+            scriptureDoc.content.sections.forEach((section: any) => {
+              if (section.verses && Array.isArray(section.verses)) {
+                section.verses.forEach((verse: any) => {
                   const joinedCommentaries = Array.isArray(verse.commentaries)
                     ? verse.commentaries
-                        .map((commentObj) =>
-                          typeof commentObj === 'object' && commentObj !== null && 'commentary' in commentObj
+                        .map((commentObj: any) =>
+                          typeof commentObj === 'object' && commentObj !== null && commentObj.commentary
                             ? commentObj.commentary
                             : ''
                         )
