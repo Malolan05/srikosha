@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import path from 'path';
 import { promises as fs } from 'fs';
 import { NextResponse } from 'next/server';
@@ -62,7 +61,6 @@ export async function GET(request) {
     );
   }
 }
-=======
 import { promises as fs } from 'fs'
 import path from 'path'
 import { NextResponse } from 'next/server'
@@ -88,4 +86,3 @@ export async function GET() {
     return new NextResponse('Error loading scriptures', { status: 500 })
   }
 } 
->>>>>>> upstream/main
