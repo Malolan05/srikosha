@@ -27,11 +27,13 @@ export async function GET() {
 
             for (const verse of section.verses) {
               const commentaries = Array.isArray(verse.commentaries)
-                ? verse.commentaries
-                    .map(c => (typeof c === 'object' && c?.commentary ? c.commentary : ''))
-                    .filter(Boolean)
-                    .join(' ')
-                : '';
+                  ? verse.commentaries
+                      .map((c: { commentary?: string }) =>
+                        typeof c === 'object' && c?.commentary ? c.commentary : ''
+                      )
+                      .filter(Boolean)
+                      .join(' ')
+                       : '';
 
               allVerses.push({
                 id: `${slug}-${section.number}-${verse.verse_number}`,
