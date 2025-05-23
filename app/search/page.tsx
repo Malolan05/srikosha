@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState, useEffect } from 'react';
 
 
@@ -13,7 +14,6 @@ const CardContent = ({ children, className }) => (
     {children}
   </div>
 );
-
 
 const ConstructionIcon = ({ className }) => (
   <svg
@@ -38,12 +38,13 @@ const ConstructionIcon = ({ className }) => (
 
 export default function SearchPage() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [scriptureData, setScriptureData] = useState([]); 
+  const [scriptureData, setScriptureData] = useState([]); // Stores all fetched, flattened verse data
   const [searchResults, setSearchResults] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); 
-  const [error, setError] = useState(null); 
-  const [showPlaceholder, setShowPlaceholder] = useState(true); 
+  const [isLoading, setIsLoading] = useState(true); // To show loading state
+  const [error, setError] = useState(null); // To handle fetch errors
+  const [showPlaceholder, setShowPlaceholder] = useState(true); // Controls initial "under construction" visibility
 
+  
   useEffect(() => {
     const fetchScriptures = async () => {
       try {
@@ -68,11 +69,12 @@ export default function SearchPage() {
   const handleSearch = () => {
     if (searchTerm.trim() === '') {
       setSearchResults([]);
-      setShowPlaceholder(true);
+      setShowPlaceholder(true); 
       return;
     }
 
-    setShowPlaceholder(false); 
+    setShowPlaceholder(false);
+
     const lowerCaseSearchTerm = searchTerm.toLowerCase();
     const filteredResults = scriptureData.filter(item =>
       (item.book && item.book.toLowerCase().includes(lowerCaseSearchTerm)) ||
@@ -107,7 +109,7 @@ export default function SearchPage() {
       <div className="container mx-auto max-w-4xl">
         <div className="flex flex-col items-center space-y-8 w-full">
 
-          {/* Search Input Section */}
+          {}
           <div className="w-full max-w-2xl">
             <div className="flex items-center space-x-4 p-4 bg-white rounded-xl shadow-md">
               <input
@@ -127,7 +129,7 @@ export default function SearchPage() {
             </div>
           </div>
 
-          {/* Conditional Rendering: Loading, Error, Placeholder, or Search Results */}
+          {}
           {isLoading ? (
             <Card className="text-center p-12 w-full max-w-2xl">
               <CardContent className="space-y-6">
@@ -181,25 +183,4 @@ export default function SearchPage() {
       </div>
     </div>
   );
-}
-import { Card, CardContent } from "@/components/ui/card"
-import { Construction } from "lucide-react"
-
-export default function SearchPage() {
-  return (
-    <div className="container mx-auto px-4 py-12">
-      <div className="max-w-4xl mx-auto">
-        <Card className="text-center p-12">
-          <CardContent className="space-y-6">
-            <Construction className="h-16 w-16 mx-auto text-primary" />
-            <h1 className="text-3xl font-bold text-primary">We're Still Working on Search</h1>
-            <p className="text-muted-foreground max-w-lg mx-auto">
-              We're currently building a powerful search feature to help you find exactly what you're looking for. 
-              Check back soon for updates!
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  )
 }
