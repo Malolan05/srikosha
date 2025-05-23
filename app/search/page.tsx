@@ -1,15 +1,29 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, {
+  useState,
+  useEffect,
+  ReactNode,
+  KeyboardEvent,
+} from "react";
 
-const Card = ({ children, className }) => (
+interface CardProps {
+  children: ReactNode;
+  className?: string;
+}
+
+const Card = ({ children, className = "" }: CardProps) => (
   <div className={`bg-white rounded-xl shadow-lg ${className}`}>{children}</div>
 );
 
-const CardContent = ({ children, className }) => (
+const CardContent = ({ children, className = "" }: CardProps) => (
   <div className={`p-6 ${className}`}>{children}</div>
 );
 
-const ConstructionIcon = ({ className }) => (
+interface IconProps {
+  className?: string;
+}
+
+const ConstructionIcon = ({ className = "" }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -29,13 +43,23 @@ const ConstructionIcon = ({ className }) => (
   </svg>
 );
 
+interface ScriptureItem {
+  id: string;
+  book?: string;
+  chapter?: number;
+  verse_number?: number;
+  original_text?: string;
+  english_translation?: string;
+  commentaries_text?: string;
+}
+
 export default function SearchPage() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [scriptureData, setScriptureData] = useState([]);
-  const [searchResults, setSearchResults] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [showPlaceholder, setShowPlaceholder] = useState(true);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [scriptureData, setScriptureData] = useState<ScriptureItem[]>([]);
+  const [searchResults, setSearchResults] = useState<ScriptureItem[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [showPlaceholder, setShowPlaceholder] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchScriptures = async () => {
@@ -44,9 +68,9 @@ export default function SearchPage() {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const data = await response.json();
+        const data: ScriptureItem[] = await response.json();
         setScriptureData(data);
-      } catch (err) {
+      } catch (err: any) {
         setError(err.message);
         console.error("Failed to fetch scriptures:", err);
       } finally {
@@ -67,21 +91,18 @@ export default function SearchPage() {
     setShowPlaceholder(false);
 
     const lowerCaseSearchTerm = searchTerm.toLowerCase();
-    const filteredResults = scriptureData.filter(
-      (item) =>
-        (item.book && item.book.toLowerCase().includes(lowerCaseSearchTerm)) ||
-        (item.original_text &&
-          item.original_text.toLowerCase().includes(lowerCaseSearchTerm)) ||
-        (item.english_translation &&
-          item.english_translation.toLowerCase().includes(lowerCaseSearchTerm)) ||
-        (item.commentaries_text &&
-          item.commentaries_text.toLowerCase().includes(lowerCaseSearchTerm)) ||
-        (item.id && item.id.toLowerCase().includes(lowerCaseSearchTerm))
+    const filteredResults = scriptureData.filter((item) =>
+      item.book?.toLowerCase().includes(lowerCaseSearchTerm) ||
+      item.original_text?.toLowerCase().includes(lowerCaseSearchTerm) ||
+      item.english_translation?.toLowerCase().includes(lowerCaseSearchTerm) ||
+      item.commentaries_text?.toLowerCase().includes(lowerCaseSearchTerm) ||
+      item.id?.toLowerCase().includes(lowerCaseSearchTerm)
     );
+
     setSearchResults(filteredResults);
   };
 
-  const handleKeyPress = (event) => {
+  const handleKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       handleSearch();
     }
