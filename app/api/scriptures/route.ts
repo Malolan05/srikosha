@@ -43,7 +43,6 @@ export async function GET(_request: Request) {
     const dataDirectory = path.join(process.cwd(), 'data', 'scriptures');
     const filenames = await fs.readdir(dataDirectory);
 
-    let allSearchableVerses: any[] = [];
     const allSearchableVerses: SearchableVerse[] = [];
 
     for (const filename of filenames) {

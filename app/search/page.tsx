@@ -1,29 +1,4 @@
 "use client";
-import React, {
-  useState,
-  useEffect,
-  ReactNode,
-  KeyboardEvent,
-} from "react";
-
-interface CardProps {
-  children: ReactNode;
-  className?: string;
-}
-
-const Card = ({ children, className = "" }: CardProps) => (
-  <div className={`bg-white rounded-xl shadow-lg ${className}`}>{children}</div>
-);
-
-const CardContent = ({ children, className = "" }: CardProps) => (
-  <div className={`p-6 ${className}`}>{children}</div>
-);
-
-interface IconProps {
-  className?: string;
-}
-
-const ConstructionIcon = ({ className = "" }: IconProps) => (
 
 import React, { useState, useEffect, KeyboardEvent } from "react";
 
@@ -70,16 +45,6 @@ const ConstructionIcon = ({ className = "" }: { className?: string }) => (
   </svg>
 );
 
-interface ScriptureItem {
-  id: string;
-  book?: string;
-  chapter?: number;
-  verse_number?: number;
-  original_text?: string;
-  english_translation?: string;
-  commentaries_text?: string;
-}
-
 export default function SearchPage() {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [scriptureData, setScriptureData] = useState<ScriptureItem[]>([]);
@@ -95,10 +60,9 @@ export default function SearchPage() {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const data: ScriptureItem[] = await response.json();
+        const data = await response.json();
         setScriptureData(data);
       } catch (err: any) {
-        setError(err.message);
         setError(err.message || "Unknown error");
         console.error("Failed to fetch scriptures:", err);
       } finally {
@@ -117,17 +81,6 @@ export default function SearchPage() {
     }
 
     setShowPlaceholder(false);
-
-    const lowerCaseSearchTerm = searchTerm.toLowerCase();
-    const filteredResults = scriptureData.filter((item) =>
-      item.book?.toLowerCase().includes(lowerCaseSearchTerm) ||
-      item.original_text?.toLowerCase().includes(lowerCaseSearchTerm) ||
-      item.english_translation?.toLowerCase().includes(lowerCaseSearchTerm) ||
-      item.commentaries_text?.toLowerCase().includes(lowerCaseSearchTerm) ||
-      item.id?.toLowerCase().includes(lowerCaseSearchTerm)
-    );
-
-    setSearchResults(filteredResults);
     const lower = searchTerm.toLowerCase();
     const filtered = scriptureData.filter(
       (item) =>
